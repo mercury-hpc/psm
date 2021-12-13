@@ -72,7 +72,7 @@ WERROR := -Werror
 INCLUDES := -I. -I$(top_srcdir)/include -I$(top_srcdir)/mpspawn \
 	-I$(top_srcdir)/include/$(os)-$(arch) $(SCIF_INCLUDE_FLAGS)
 BASECFLAGS += $(BASE_FLAGS) $(if $(MIC:0=),$(if $(filter $(CC),icc),-mmic,-D__MIC__)) \
-	-Wall $(WERROR) $(if $(MIC:0=),-Wno-unused) -fpic -fPIC -D_GNU_SOURCE \
+	-Wall $(if $(MIC:0=),-Wno-unused) -fpic -fPIC -D_GNU_SOURCE \
 	$(if $(filter $(CC),icc),,-funwind-tables) $(if $(PSM_PROFILE:0=),-DPSM_PROFILE) \
 	${IPATH_CFLAGS}
 ASFLAGS += $(BASE_FLAGS) $(if $(MIC:0=),$(if $(filter $(CC),icc),-mmic,-D__MIC__)) -g3 -fpic
@@ -85,6 +85,9 @@ LDFLAGS += $(SCIF_LINK_FLAGS)
 ifneq (,${PSM_DEBUG})
   BASECFLAGS += -O -g3 -DPSM_DEBUG $(if $(filter $(CC),icc),,-funit-at-a-time) \
 	-Wp,-D_FORTIFY_SOURCE=2
+  ifneq (,${PSM_SANITIZE})
+    BASECFLAGS += -fsanitize=thread
+  endif
 else
   BASECFLAGS += -O3 -g3 
 endif

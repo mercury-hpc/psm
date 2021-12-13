@@ -40,8 +40,8 @@ ifdef LOCAL_PREFIX
 else
 	INSTALL_PREFIX := /usr
 endif
-libdir ?= $(INSTALL_PREFIX)/lib64
-sbindir ?= $(INSTALL_PREFIX)/sbin
+libdir ?= /lib64
+sbindir ?= /sbin
 
 INSTALL_LIB_TARG = $(libdir)
 INSTALL_SBIN_TARG = $(sbindir)
@@ -188,8 +188,8 @@ install: all
 		ln -sf ${TARGLIB}.so.${MAJOR}.${MINOR} ${TARGLIB}.so.${MAJOR} ; \
 		ln -sf ${TARGLIB}.so.${MAJOR} ${TARGLIB}.so) ; \
 	if [ X$(MIC) != X1 ]; then \
-		install -D psm.h ${DESTDIR}/usr/include/psm.h ; \
-		install -D psm_mq.h ${DESTDIR}/usr/include/psm_mq.h ; \
+		install -D psm.h ${DESTDIR}/include/psm.h ; \
+		install -D psm_mq.h ${DESTDIR}/include/psm_mq.h ; \
 	else \
 		filelist=/opt/intel/mic/psm/psm.filelist ; \
 		sed -e 's!%IPATHMAJOR%!$(IPATH_LIB_MAJOR)!g' \
